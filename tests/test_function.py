@@ -32,10 +32,13 @@ def prepare_env_from_local_settings():
     tests locally. This function is used to set the environment variables
     when running the tests locally.
     """
+    # Do not do anything when the local.settings.json file does not exist
+    if not os.path.exists('local.settings.json'):
+        return
+    
+    # set env from local.settings.json
     with open('local.settings.json', 'r') as f:
         local_settings = json.load(f)
-
-    # set env from local.settings.json
     for key, value in local_settings.get('Values', {}).items():
         os.environ[key] = value
 
