@@ -43,7 +43,7 @@ def http_trigger(req: func.HttpRequest) -> func.HttpResponse:
         check_environment_variables()
     except Exception as ex:
         logging.exception("Cannot run Function without proper environment being configured, aborting...")
-        return 
+        return func.HttpResponse("OK", status_code=200)
     
     cfg_bot_token = os.environ.get("BIBA_TELEGRAM_BOT_TOKEN")
     cfg_bot_channel = os.environ.get("BIBA_TELEGRAM_CHANNEL")
