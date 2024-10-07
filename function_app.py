@@ -59,8 +59,7 @@ def http_trigger(req: func.HttpRequest) -> func.HttpResponse:
     # log_bot = LogBot()
     # bot_handler = BotHandler(log_bot)
 
-    text = data['message']['text']
-    if text.startswith("/biba"):
-        bot_handler.handle_biba()
+    command = data['message']['text']
+    bot_handler.handle_command(command)
 
     return func.HttpResponse("OK", status_code=200)
