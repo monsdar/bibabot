@@ -17,5 +17,5 @@ class TestBibaCommand(unittest.TestCase):
 
     def test_get_message_from_command(self):
         cmd = BibaCommand()
-        self.assertEqual(cmd.get_message_from_command('/biba'), 'Hello this is Bibabot!')
+        self.assertEqual(cmd.get_messages_from_command('/biba'), ['Hello this is Bibabot!'])
         

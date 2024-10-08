@@ -1,9 +1,10 @@
 
 from bibabot.ICommand import ICommand
+from typing import List
 
 class BibaCommand(ICommand):
     def is_valid_command(self, command: str) -> bool:
         return command.startswith('/biba')
 
-    def get_message_from_command(self, command: str) -> str:
-        return 'Hello this is Bibabot!'
+    def get_messages_from_command(self, command: str) -> List[str]:
+        return ['Hello this is Bibabot!']
