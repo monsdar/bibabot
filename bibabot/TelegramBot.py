@@ -9,5 +9,5 @@ class TelegramBot(IBot):
         self.bot_channel = bot_channel
 
     def send_message(self, message):
-        self.bot.send_message(self.bot_channel, message)
+        self.bot.send_message(self.bot_channel, message, parse_mode='MarkdownV2')
         
