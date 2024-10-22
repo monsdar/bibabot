@@ -2,7 +2,9 @@
 from bibabot.ICommand import ICommand
 
 import datetime
+import logging
 from typing import List
+from pprint import pformat
 from espn_api.basketball import League #Ref: https://github.com/cwendt94/espn-api/wiki/League-Class-Basketball
 
 class RecentActivityCommand(ICommand):
@@ -27,6 +29,7 @@ class RecentActivityCommand(ICommand):
         activities = self.league.recent_activity(size=10) # TODO: Is max 10 enough?
         messages = []
         for activity in activities:
+            logging.info(f"Handling the following activity: {pformat(activity)}")
             act_timepoint = datetime.datetime.fromtimestamp(activity.date/1000.0)
             act_check_period = datetime.datetime.now() - datetime.timedelta(seconds=self.activity_since_secs)
             if act_timepoint < act_check_period: # if activity is older than what we want to work with
