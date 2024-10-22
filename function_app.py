@@ -56,7 +56,7 @@ def get_bot_handler() -> BotHandler:
 ## Timer trigger
 @app.function_name(name="transfer_update")
 @app.timer_trigger(arg_name="timer",
-                   schedule="0 * * * * *", # TODO: How to translate TIMER_DURATION_SECS to cron syntax
+                   schedule="0 0 * * * *", # TODO: How to translate TIMER_DURATION_SECS to cron syntax
                    run_on_startup=False)
 def transfer_update(timer: func.TimerRequest) -> None:
     logging.info('[transfer_update] triggered via Timer!')
