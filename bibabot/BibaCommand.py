@@ -7,4 +7,4 @@ class BibaCommand(ICommand):
         return command.startswith('/biba')
 
     def get_messages_from_command(self, command: str) -> List[str]:
-        return ['Hello this is Bibabot!']
+        return ['Hello this is Bibabot\!']
