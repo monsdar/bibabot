@@ -5,7 +5,11 @@
             "name": "Run pytest",
             "type": "debugpy",
             "request": "launch",
-            "module": "pytest"
+            "module": "pytest",
+            "args": [
+                "--log-cli-level=INFO",
+                
+            ]
         },
         {
             "name": "Attach to Python Functions",

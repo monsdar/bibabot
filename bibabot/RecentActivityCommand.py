@@ -29,14 +29,15 @@ class RecentActivityCommand(ICommand):
         activities = self.league.recent_activity(size=10) # TODO: Is max 10 enough?
         messages = []
         for activity in activities:
-            if not activity:
-                logging.info("Activity was empty, ignoring...")
+            if not activity.actions:
+                logging.info("Activity has no actions, ignoring...")
                 continue
             else:
-                logging.info(f"Handling the following activity: {pformat(activity)}")
+                logging.info(f"Handling the following activity: {activity.__dict__}")
             act_timepoint = datetime.datetime.fromtimestamp(activity.date/1000.0)
             act_check_period = datetime.datetime.now() - datetime.timedelta(seconds=self.activity_since_secs)
             if act_timepoint < act_check_period: # if activity is older than what we want to work with
+                logging.info(f"Activity is too old, skipping...")
                 continue
 
             message = "_" + act_timepoint.strftime("%H:%M:%S") + "_ New Activity:\n"
@@ -46,7 +47,8 @@ class RecentActivityCommand(ICommand):
                 team = action[0].team_name
                 type = self.action_types[action[1]]
                 player = action[2]
-                message += f"\* *{team}* {type} *{player}*\n"
+                player_name = player.replace('.', '\\.').replace('-', '\\-').replace('_', '\\_')
+                message += f"\* *{team}* {type} *{player_name}*\n"
 
                 if "added" in type:
                     plus_players.append(player)
@@ -89,6 +91,7 @@ class RecentActivityCommand(ICommand):
         diff = self.get_player_diff(plus_players, minus_players)
         message = ""
         for cat, value in diff.items():
-            message += f"\n  \* *{cat}:* {value:.2f}"
+            val_str = f"{value:.2f}".replace('-', '\-')
+            message += f"\n  \* *{cat}:* {val_str}"
         return message
     
