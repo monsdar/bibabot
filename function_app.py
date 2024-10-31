@@ -9,6 +9,7 @@ from espn_api.basketball import League #Ref: https://github.com/cwendt94/espn-ap
 from bibabot.BotHandler import BotHandler
 from bibabot.BibaCommand import BibaCommand
 from bibabot.RecentActivityCommand import RecentActivityCommand
+from bibabot.PowerRankingCommand import PowerRankingCommand
 from bibabot.TelegramBot import TelegramBot
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
@@ -50,10 +51,11 @@ def get_bot_handler() -> BotHandler:
     commands = [
         BibaCommand(),
         RecentActivityCommand(league, TIMER_DURATION_SECS),
+        PowerRankingCommand(league)
         ]
     return BotHandler(bot, commands)
 
-## Timer trigger
+## Timer trigger for Transfer Activity
 @app.function_name(name="transfer_update")
 @app.timer_trigger(arg_name="timer",
                    schedule="0 0 * * * *", # TODO: How to translate TIMER_DURATION_SECS to cron syntax
@@ -63,6 +65,20 @@ def transfer_update(timer: func.TimerRequest) -> None:
     try:
         bot_handler = get_bot_handler()
         bot_handler.handle_command("/activity")
+    except Exception as ex:
+        logging.exception("Cannot run Function without proper environment being configured, aborting...")
+        return
+    
+## Timer trigger for Power Rankings
+@app.function_name(name="power_update")
+@app.timer_trigger(arg_name="timer",
+                   schedule="0 0 11 * * MON",
+                   run_on_startup=False)
+def power_update(timer: func.TimerRequest) -> None:
+    logging.info('[power_update] triggered via Timer!')
+    try:
+        bot_handler = get_bot_handler()
+        bot_handler.handle_command("/power")
     except Exception as ex:
         logging.exception("Cannot run Function without proper environment being configured, aborting...")
         return

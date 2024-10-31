@@ -74,3 +74,20 @@ class TestFunction(unittest.TestCase):
         # NOTE: Whe running this without a proper local environment the function return code 500
         # Locally with a proper env set it should return 200
         # self.assertEqual(resp.status_code, 200)
+        # self.assertEqual(resp.status_code, 200)
+    
+    def test_handle_power_ranking(self):
+        # Prepare env
+        prepare_env_from_local_settings()
+        mock_request_data['message']['text'] = '/power'
+        req = func.HttpRequest(method='GET',
+                            body=json.dumps(mock_request_data).encode('utf-8'),
+                            url='/api/biba')
+            
+        # Call the function.
+        func_call = http_trigger.build().get_user_function()
+        resp = func_call(req)
+            
+        # NOTE: Whe running this without a proper local environment the function return code 500
+        # Locally with a proper env set it should return 200
+        # self.assertEqual(resp.status_code, 200)

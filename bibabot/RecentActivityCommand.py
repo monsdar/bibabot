@@ -4,7 +4,6 @@ from bibabot.ICommand import ICommand
 import datetime
 import logging
 from typing import List
-from pprint import pformat
 from espn_api.basketball import League #Ref: https://github.com/cwendt94/espn-api/wiki/League-Class-Basketball
 
 class RecentActivityCommand(ICommand):
