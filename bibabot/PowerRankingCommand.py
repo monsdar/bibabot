@@ -75,10 +75,10 @@ class PowerRankingCommand(ICommand):
                 ordered_results = sorted(score_list, key=lambda item: item['stats'][cat]['value'])
                 if cat == 'TO':
                     ordered_results.reverse()
-                logging.info(f"[{cat}]")
+                #logging.info(f"[{cat}]")
                 for num, result in enumerate(ordered_results, start=1):
                     team = result['team']
-                    logging.info(f"  {num}. {team}")
+                    #logging.info(f"  {num}. {team}")
                     if not team in team_ranking:
                         team_ranking[team] = 0
                     team_ranking[team] += num
