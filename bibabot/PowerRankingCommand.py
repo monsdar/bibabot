@@ -9,7 +9,7 @@ from espn_api.basketball import League #Ref: https://github.com/cwendt94/espn-ap
 class PowerRankingCommand(ICommand):
     def __init__(self, league: League):
         self.league = league
-        self.num_weeks_to_calc = 1
+        self.num_weeks_to_calc = 4
         self.start_week = self.get_weeks_since_season_start() - self.num_weeks_to_calc
         if self.start_week < 1:
             self.start_week = 1 # ESPN starts counting at 1
@@ -86,11 +86,14 @@ class PowerRankingCommand(ICommand):
         return sorted_rankings
 
     def get_ranking_messages(self, current_rankings, last_rankings=[]):
-        if self.num_weeks_to_calc == 1:
+        num_weeks = self.get_weeks_since_season_start()
+        if self.num_weeks_to_calc < num_weeks:
+            num_weeks = self.num_weeks_to_calc
+        if num_weeks == 1:
             woche_name = "Woche"
         else:
             woche_name = "Wochen"
-        message = f"*Power Rankings*\n_{self.num_weeks_to_calc} {woche_name}_"
+        message = f"*Power Rankings*\n_{num_weeks} {woche_name}_"
         for index, rank in enumerate(current_rankings, start=1):
             if last_rankings:
                 pos_diff = self.get_index_of_team(rank[0], last_rankings) - index
